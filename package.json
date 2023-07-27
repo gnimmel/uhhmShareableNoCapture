@@ -1,0 +1,31 @@
+{
+  "name": "uhhmshareablenocapture",
+  "version": "1.0.0",
+  "description": "api and p5js frontend",
+  "main": "start.js",
+  "bin": "start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node start.js",
+    "build": "pkg ."
+  },
+  "pkg": {
+    "targets": [
+      "latest-linux-x64",
+      "latest-macos-arm64",
+      "latest-win-x64"
+    ],
+    "assets": [
+      "public/**/*"
+    ],
+    "outputPath": "dist"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "tmp": "^0.1.0"
+  }
+}
