@@ -146,14 +146,15 @@ void main() {
 
 // GLSL programs
 let vertexShader = `
+precision mediump float;
 attribute vec3 aPosition;
 attribute vec2 aTexCoord;
-
 varying vec2 vTexCoord;
-
 void main() {
   vTexCoord = aTexCoord;
-  gl_Position = vec4(aPosition, 1.0);
+  vec4 positionVec4 = vec4(aPosition, 1.0);
+  positionVec4.xy = positionVec4.xy * 2.0 - 1.0;
+  gl_Position = positionVec4;
 }
 `;
 
@@ -194,78 +195,78 @@ void main() {
 }
 `;
 
-
 let x, y;
 let myFont;
 let video;
 let shaderProgram;
-let graphics, graphicsText2D;
+let graphics, shaderGraphics;;
 let aspectRatio;
 
 function preload() {
-  video = createVideo(['/public/videos/36_Competitive_FF4D2F_Particles_Sphere.mp4']);
+  
+  video = createVideo(['/public/videos/31_Nostalgic_D0DAFF_Particles_Sphere.mp4']);
   myFont = loadFont('/public/fonts/PPMori-Regular.otf');  // Use a local font file
 }
 
 function setup() {
+  shaderProgram = loadShader('vert.glsl', 'frag.glsl');
   createCanvas(1080, 1920, WEBGL);
   
-  graphics = createGraphics(width, width, WEBGL);  // Create a 2D graphics for text
-  //graphics.textFont(myFont);  // Set the font
-  //graphics.noStroke();
-  graphicsText2D = createGraphics(width, width);  // Create a 2D graphics for text
-  graphicsText2D.textFont(myFont);  // Set the font
-  graphicsText2D.noStroke();
+  graphics = createGraphics(width, width, WEBGL);  
+  graphics.textFont(myFont);
+  graphics.noStroke();
 
+  shaderGraphics = createGraphics(width, width, WEBGL);
+  
   video.volume(0);  
   video.loop();
   video.hide();
   //video.play();
 
-  shaderProgram = createShader(vertexShader, fragmentShaderGood_random);
-  shader(shaderProgram);  // Apply the shader to the main canvas
+  //shaderProgram = createShader(vertexShader, fragmentShaderGood_random);
+  //shader(shaderProgram);  // Apply the shader to the main canvas
   
-  x = graphics.width / 2;
-  y = graphics.height / 2;
+  x = 0;//graphics.width / 2;
+  y = 0;//graphics.height / 2;
 
   aspectRatio = width / height;
 }
 
 function draw() {
   clear();
-  background(220);
-  
   
   image(video, -width/2, -height/2, width, height);
 
-  //graphics.background(0, 0, 0, 0);  // Ensure the background is transparent
-  graphicsText2D.clear();
-  graphicsText2D.fill("#FF4D2F");
-  graphicsText2D.textSize(67);
-  graphicsText2D.textAlign(CENTER, CENTER);
-  graphicsText2D.text('Hello, world!\nLets eat tacos', x, y);
-  
-  graphics.clear();
-  graphics.image(graphicsText2D, -graphicsText2D.width/2, -graphicsText2D.height/2);
-  //graphics.image(graphicsText2D, 0, 0);
+   // Draw text onto graphics buffer
+   graphics.clear();
+   graphics.textAlign(CENTER, CENTER);
+   graphics.textSize(67);
+   graphics.fill("#D0DAFF");
+   graphics.text('Hello, world!\nLets eat tacos', x, y);
+   
+   shaderGraphics.clear();
+   // Apply shader to graphics buffer
+   shaderGraphics.shader(shaderProgram);
 
   shaderProgram.setUniform('uTexture', graphics);  // Pass the HTMLCanvasElement to the shader
   shaderProgram.setUniform('uTime', millis() / 1000.0);
 
-  //texture(graphics);
-  //plane(graphics.width, graphics.height);
+  shaderGraphics.rect(-width/2, -height/2, width, width);
+  
+  // Draw the graphics buffer to the canvas
+  image(shaderGraphics,-width/2, -height/2);
 
   //texture(graphics);
   //rect(-width/2, -height/2, graphics.width, graphics.height);
 
-  beginShape(TRIANGLES);
+  /*beginShape(TRIANGLES);
   vertex(-1, -aspectRatio, 0, 0, 0);  // Changed texture y-coordinate from 1 to 0
   vertex(1, -aspectRatio, 0, 1, 0);   // Changed texture y-coordinate from 1 to 0
   vertex(1, aspectRatio, 0, 1, 1);    // Changed texture y-coordinate from 0 to 1
   vertex(1, aspectRatio, 0, 1, 1);    // Changed texture y-coordinate from 0 to 1
   vertex(-1, aspectRatio, 0, 0, 1);   // Changed texture y-coordinate from 0 to 1
   vertex(-1, -aspectRatio, 0, 0, 0);  // Changed texture y-coordinate from 1 to 0
-  endShape();
+  endShape();*/
 
   /*beginShape(TRIANGLES);
   vertex(-1, -aspectRatio, 0, 0, 1);
