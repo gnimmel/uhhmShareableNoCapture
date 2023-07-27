@@ -3,6 +3,7 @@ import SphereAnimation from '/text_animations/SphereAnimation.js';
 import KaraokeAnimation from '/text_animations/KaraokeAnimation.js';
 import SlideAnimation from '/text_animations/SlideAnimation.js';
 import JiggleDisplaceAnimation from '/text_animations/JiggleDisplaceAnimation.js';
+import ParticleSphereAnimation from '/text_animations/ParticleSphereAnimation.js';
 
 class BaseSketch {
     constructor(fps, canvasWidth, canvasHeight, lyrics, textColor, videoPath, DURATION = 15, REQUIRES_GL = true) {
@@ -73,21 +74,28 @@ class BaseSketch {
         p.textFont(this.font);  
 
         this.videoGraphics = p.createGraphics(p.width, p.height);//, p.WEBGL);
+        
+        let str = this.videoPath.toLowerCase();
 
-        if (this.videoPath.toLowerCase().includes("Floating_Particles".toLowerCase())) {
+        if (str.includes("Floating_Particles".toLowerCase())) 
+        {
             this.textAnimation = new SphereAnimation(p, this.font, this.lyrics, this.textColor);
-        } else if (this.videoPath.toLowerCase().includes("Geometry_Wave".toLowerCase())) {
+        } else if (str.includes("Geometry_Wave".toLowerCase())) 
+        {
             this.textAnimation = new KaraokeAnimation(p, this.font, this.lyrics, this.textColor);
-        } else if (this.videoPath.toLowerCase().includes("Spiral".toLowerCase())) {
+        } else if (str.includes("Spiral".toLowerCase())) 
+        {
             this.textAnimation = new SlideAnimation(p, this.font, this.lyrics, this.textColor);
-        } else if (this.videoPath.toLowerCase().includes("ASCII_Sphere".toLowerCase())) {
+        } else if (str.includes("ASCII_Sphere".toLowerCase())) 
+        {
             this.textAnimation = new JiggleDisplaceAnimation(p, this.font, this.lyrics, this.textColor);
-        } else if (this.videoPath.toLowerCase().includes("ASCII".toLowerCase())) {
+        } else if (str.includes("ASCII".toLowerCase())) 
+        {
             console.log("ANIMATION NEEDS TO BE UPDATED");
             this.textAnimation = new KaraokeAnimation(p, this.font, this.lyrics, this.textColor);
-        } else if (this.videoPath.toLowerCase().includes("Sphere".toLowerCase())) {
-            console.log("ANIMATION NEEDS TO BE UPDATED");
-            this.textAnimation = new JiggleDisplaceAnimation(p, this.font, this.lyrics, this.textColor);
+        } else if (str.includes("Sphere".toLowerCase())) 
+        {
+            this.textAnimation = new ParticleSphereAnimation(p, this.font, this.lyrics, this.textColor);
         } else {
             console.error("INVALID ANIMATION");
         }
@@ -100,10 +108,10 @@ class BaseSketch {
 
     p5draw(p) {
         if (!this.bVideoReady) return;
-        //p.clear(0,0,0,0);
+        p.clear();//0,0,0,0);
 
         //p.image(this.video, this.w_gloffset, this.h_gloffset, p.width, p.height);
-        p.resetShader();
+        //p.resetShader();
         this.videoGraphics.image(this.video, 0, 0, p.width, p.height);
         p.image(this.videoGraphics, this.w_gloffset, this.h_gloffset);
 

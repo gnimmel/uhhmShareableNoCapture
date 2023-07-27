@@ -7,14 +7,14 @@ class BaseAnimation {
       this.sentences = arrLyrics.flat();
       this.baseW = 1028;
     }
+    
+    preload() {
+    }
   
-    setup() {
-      // (overridden by subclasses)
-      
+    setup() {      
     }
   
     draw() {
-      // (overridden by subclasses)
     }
   }
 
