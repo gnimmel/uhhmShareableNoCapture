@@ -28,12 +28,16 @@ class SphereAnimation extends BaseAnimation {
     this.img.textAlign(this.p.CENTER, this.p.TOP);
 
     let xShift = 0.33;
+    let cnt = 0;
     for (let i = 0; i < 3; i++) {
       this.img.textSize(this.fontSize);
       this.img.textLeading(this.leading);
       this.img.fill(this.textColor);
 
-      let {lines, numLines} = this.splitIntoLines(this.arrLyrics[i].join(' '), this.img.width*0.25);
+      let {lines, numLines} = this.splitIntoLines(this.arrLyrics[cnt++].join(' '), this.img.width*0.25);
+      if (cnt >= this.arrLyrics.length) 
+        cnt = 0;
+      
       let totalTextHeight = numLines * this.leading;
       while (totalTextHeight > this.img.height && this.fontSize > 1 && this.leading > 1) {
         this.fontSize -= 0.5;
