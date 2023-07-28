@@ -24,8 +24,8 @@ The request body should be a JSON object with the following properties:
 | Property | Type   | Description                       |
 |----------|--------|-----------------------------------|
 | `id`     | String | The unique id of the asset          |
-| `emotion`| String | The emotion of the asset          |
-| `lyrics` | [ [String], [String]... ] | The lyrics from the AI     |
+| `emotion`| String | The emotion from GPT          |
+| `lyrics` | [ [String], [String]... ] | The lyrics from GPT     |
 
 ##### Example
 
@@ -99,8 +99,6 @@ This endpoint is used to fetch a sketch by its id from the database.
 **Method** : `GET`
 
 **URL Parameters** : #### Request
-
-The request body should be a JSON object with the following properties:
 
 | Property | Type   | Description                       |
 |----------|--------|-----------------------------------|
