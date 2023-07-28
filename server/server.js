@@ -20,11 +20,13 @@ const cors = require('cors')
 
 const model = require('../public/model');
 
-if (process.pkg)
+var videoDirPath = path.join(os.homedir(), 'Desktop', 'videos');
+model.init(videoDirPath);
+/*if (process.pkg)
   model.init(path.join(__dirname ,'..', 'public', 'videos'));
 else
   model.init(path.join(process.cwd(), 'public', 'videos'));
-
+*/
 
 var app = express();
 app.use(cors())
@@ -128,7 +130,7 @@ app.get('/assetdata/:id', (req, res) => {
 
   //process.pkg ? path.join(__dirname ,'..', 'public', 'shareable.html') : path.join(process.cwd(), 'public', 'shareable.html'), 'utf8', function(err, data)
 
-app.get('/videos/:filename', function(req, res) {
+/*app.get('/videos/:filename', function(req, res) {
   try {
     var filename = req.params.filename;
     var videoPath = path.resolve(__dirname, 'videos', filename);
@@ -149,8 +151,32 @@ app.get('/videos/:filename', function(req, res) {
     console.log("An error occurred:", error);
     res.status(500).send({ error: 'Internal server error' });
   }
-});
+});*/
 
+app.get('/videos/:filename', function(req, res) {
+  try {
+    var filename = req.params.filename;
+    //var videoPath = path.resolve(__dirname, 'videos', filename);
+    var videoDirPath = path.join(os.homedir(), 'Desktop', 'videos');
+    var videoPath = path.resolve(videoDirPath, filename);
+    
+    //console.log("videoPath from get request: " + videoPath);
+
+    // Check if file exists before sending
+    fs.access(videoPath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.log(`File ${videoPath} does not exist`);
+        res.status(404).send({ error: 'File not found' });
+      } else {
+        //console.log("sending video");
+        res.sendFile(videoPath);
+      }
+    });
+  } catch (error) {
+    console.log("An error occurred:", error);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
 
 startServer();
 
