@@ -33,7 +33,7 @@ The request body should be a JSON object with the following properties:
 {
   "id": "12345",
   "emotion": "competitive",
-  "lyrics": "[
+  "lyrics": [
         [
         "Don't know where she gets it,",
         "Dem golden vocals be hittin'.",
@@ -45,7 +45,7 @@ The request body should be a JSON object with the following properties:
         "Workin' hard, no time to laze.",
         "Bittersweet, the memories flow,",
         "Humble beginnings, watch her glow."
-        ]]"
+        ]]
 }
 ```
 
@@ -98,7 +98,13 @@ This endpoint is used to fetch a sketch by its id from the database.
 
 **Method** : `GET`
 
-**URL Parameters** : `id=[unicode 64 chars max]` where `id` is the ID of the sketch in the database.
+**URL Parameters** : #### Request
+
+The request body should be a JSON object with the following properties:
+
+| Property | Type   | Description                       |
+|----------|--------|-----------------------------------|
+| `id`     | String | The unique id of the asset          |
 
 ### Success Response
 
@@ -107,7 +113,30 @@ This endpoint is used to fetch a sketch by its id from the database.
 **Code** : `200 OK`
 
 **Content example**
-HTML content of the sketch.
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="data:image/x-icon;,">
+    <link rel="stylesheet" type="text/css" href="/shareable.css">
+    <!--<script src="https://cdn.jsdelivr.net/npm/p5/lib/p5.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    
+  </head>
+  <body>
+    <div id="container">
+      <div id="the-sketch"></div>
+    </div>
+  </body>
+  
+  <script type="module" src="/shareable-main.js"></script>
+  <script>
+    let id = "<%= id %>";
+    let serverIp = "<%= serverIp %>";
+  </script>
+
+</html> 
+```
 
 ### Error Responses
 
