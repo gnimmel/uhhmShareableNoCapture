@@ -32,6 +32,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.static(path.join(__dirname, '..', 'public', 'videos')));
 
+// PUBLIC
 
 app.post('/add-asset-data', async (req, res) => {
   const { id, emotion, lyrics } = req.body;
@@ -104,12 +105,15 @@ app.post('/get-sketch', async (req, res) => {
     }
 
     // Render the HTML file as an EJS template, passing the id as a parameter
-    var html = ejs.render(data, { id: id });
+    var html = ejs.render(data, { id: id, serverIp: model.getHostIP() });
 
     // Send the rendered HTML
     res.send(html);
   });
 });
+
+
+// INTERNAL
 
 app.get('/assetdata/:id', (req, res) => {
   const id = req.params.id;

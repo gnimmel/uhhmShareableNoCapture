@@ -16,17 +16,24 @@ class SlideAnimation extends BaseAnimation {
     this.timeBetweenSentences = 1500; 
     this.delayStartTime = 0;
     this.lines = [];
-    this.fontSize = 94;
-    this.leading = 85;
+    this.fontSize = 95;
+    this.leading = 86;
     //this.textColor = textColor;
     this.textBoxWidth;// = this.p.width * 0.7;
-    this.textX = 0;//this.p.width / 2;
+    this.textX = 0;//-this.p.width / 2;
     this.textY;// = this.leading;//this.p.height / 2;
     this.p.textFont(this.font);
+
+    this.shaderProgram;
+    this.graphics;
+    this.shaderGraphics;
+    this.shaderHeightScale = 0.63;
   }
 
   setup() {
     super.setup();
+    this.shaderProgram = this.p.loadShader('/text_animations/glsl/basic.vert', '/text_animations/glsl/displace-spiral.frag');
+
     this.fontSize = parseInt(this.p.width / (this.baseW / this.fontSize));
     this.leading = parseInt(this.p.width / (this.baseW / this.leading));
     this.textBoxWidth = this.p.width * 0.7;
@@ -34,17 +41,33 @@ class SlideAnimation extends BaseAnimation {
     
     this.p.textSize(this.fontSize);
     this.p.textLeading(this.leading);
+    this.p.noStroke();
     this.lines = this.splitIntoLines(this.sentences[this.currentSentence], this.textBoxWidth);
     this.animationStartTime = this.p.millis();
     this.delayStartTime = this.p.millis();
+
+    this.graphics = this.p.createGraphics(this.p.width, this.p.height*this.shaderHeightScale, this.p.WEBGL);
+    this.graphics.textFont(this.font);
+    this.graphics.textSize(this.fontSize);
+    this.graphics.textLeading(this.leading);
+    this.graphics.noStroke();
+
+    this.shaderGraphics = this.p.createGraphics(this.p.width, this.p.height*this.shaderHeightScale, this.p.WEBGL);
+    this.shaderGraphics.noStroke();
+    
   }
 
   draw() {
     super.draw();
 
-    this.p.textAlign(this.p.CENTER);
+    this.graphics.textAlign(this.p.CENTER);
     let boxHeight = this.lines.length * this.leading;
     let boxTop = this.textY - boxHeight / 2;
+
+    this.shaderGraphics.shader(this.shaderProgram);
+
+    this.graphics.clear();
+      this.shaderGraphics.clear();
 
     for (let i = 0; i < this.lines.length; i++) {
       let y;
@@ -62,8 +85,19 @@ class SlideAnimation extends BaseAnimation {
       {
         y = boxTop + i * this.leading;
       }
-      this.p.fill(this.textColor);
-      this.p.text(this.lines[i], this.textX, y);
+      //this.p.fill(this.textColor);
+      //this.p.text(this.lines[i], this.textX, y);
+      
+      this.graphics.fill(this.textColor);
+      this.graphics.text(this.lines[i], this.textX, y);
+            
+      this.shaderProgram.setUniform('uTexture', this.graphics);
+      this.shaderProgram.setUniform('uTime', this.p.millis() / 1000.0);
+      
+      this.shaderGraphics.rect(-this.p.width/2, -(this.p.height*this.shaderHeightScale)/2, this.p.width, this.p.height);
+
+      // Draw the graphics buffer to the canvas
+      this.p.image(this.shaderGraphics,-this.p.width/2, -(this.p.height*this.shaderHeightScale)/2);
     }
 
     if (this.animatingIn && this.p.millis() - this.animationStartTime > this.baseTimePerLine + (this.lines.length - 1) * this.timeIncreasePerLineIn) {

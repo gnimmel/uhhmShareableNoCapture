@@ -19,7 +19,7 @@ class ParticleSphereAnimation extends BaseAnimation {
     this.shaderProgram;
     this.graphics;
     this.shaderGraphics;
-    this.aspectRatio;
+    //this.aspectRatio;
   }
 
   setup() {
@@ -47,7 +47,7 @@ class ParticleSphereAnimation extends BaseAnimation {
     this.shaderGraphics = this.p.createGraphics(this.p.width, this.p.width, this.p.WEBGL);
     this.shaderGraphics.noStroke();
 
-    this.aspectRatio = this.p.width / this.p.height;
+    //this.aspectRatio = this.p.width / this.p.height;
   }
 
   draw() {
@@ -140,18 +140,6 @@ class ParticleSphereAnimation extends BaseAnimation {
   
               // Draw the graphics buffer to the canvas
               this.p.image(this.shaderGraphics,-this.p.width/2, -this.p.width/2);
-
-              //this.p.image(this.graphics, -this.graphics.width/2, -this.graphics.height/2);
-                
-              /*this.p.beginShape(this.p.TRIANGLES);
-              this.p.vertex(-1, -this.aspectRatio, 0, 0, 1);
-              this.p.vertex(1, -this.aspectRatio, 0, 1, 1);
-              this.p.vertex(1, this.aspectRatio, 0, 1, 0);
-              this.p.vertex(1, this.aspectRatio, 0, 1, 0);
-              this.p.vertex(-1, this.aspectRatio, 0, 0, 0);
-              this.p.vertex(-1, -this.aspectRatio, 0, 0, 1);
-              this.p.endShape();*/
-              
             }
           }
           lineX += this.p.textWidth(lineWords[j] + " ");
