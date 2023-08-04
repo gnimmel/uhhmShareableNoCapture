@@ -107,6 +107,7 @@ app.post('/get-sketch', async (req, res) => {
     }
 
     // Render the HTML file as an EJS template, passing the id as a parameter
+    // var html = ejs.render(data, { id: id, serverIp: model.getHostIP() });
     var html = ejs.render(data, { id: id, serverIp: model.getHostIP() });
 
     // Send the rendered HTML
