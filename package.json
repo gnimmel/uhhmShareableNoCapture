@@ -1,6 +1,6 @@
 {
   "name": "uhhmshareablenocapture",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "api and p5js frontend",
   "main": "start.js",
   "bin": "start.js",
