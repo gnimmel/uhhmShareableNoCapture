@@ -46,8 +46,8 @@ window.onload = async function()
 
 async function fetchAssetData(id) {
   try {
-      //let response = await fetch(`http://localhost:4000/assetdata/${id}`);
-      let response = await fetch(`http://${serverIp}:4000/assetdata/${id}`);
+      let response = await fetch(`http://localhost:4000/assetdata/${id}`);
+      // let response = await fetch(`http://${serverIp}:4000/assetdata/${id}`);
 
       if (!response.ok) {
           throw new Error("HTTP error " + response.status);
@@ -57,7 +57,8 @@ async function fetchAssetData(id) {
 
       console.log(json);
       
-      vidPath = `http://${serverIp}:4000/videos/${json.file}`;
+      // vidPath = `http://${serverIp}:4000/videos/${json.file}`;
+      vidPath = `http://localhost:4000/videos/${json.file}`;
 
       lyrics = json.lyrics;
       textColor = json.textcolor;
