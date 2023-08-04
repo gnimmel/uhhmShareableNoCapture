@@ -7,7 +7,7 @@ const os = require('os');
 const ejs = require('ejs');
 
 function startServer() {
-  app.listen(apiPort, () => {
+  app.listen(apiPort, "::", () => {
     console.log(`API port: ${apiPort}`);
   });
 }
