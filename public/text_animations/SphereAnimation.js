@@ -7,10 +7,10 @@ class SphereAnimation extends BaseAnimation {
     this.arrLyrics = arrLyrics;
     //this.textColor = textColor;
     this.img = undefined;
-    this.fontSize = 12;
-    this.leading = 15;
-    this.texW = 500;
-    this.texH = 300;
+    this.fontSize = 14;
+    this.leading = 17;
+    this.texW = 600;
+    this.texH = 500;
   }
 
   setup() {
@@ -34,18 +34,23 @@ class SphereAnimation extends BaseAnimation {
       this.img.textLeading(this.leading);
       this.img.fill(this.textColor);
 
-      let {lines, numLines} = this.splitIntoLines(this.arrLyrics[cnt++].join(' '), this.img.width*0.25);
+      let tmpStr = this.arrLyrics[cnt++].join(' ');
+      let {lines, numLines} = this.splitIntoLines(tmpStr, this.img.width*0.25);
+      console.log(tmpStr);
+      console.log("numLines:: "+numLines);
       if (cnt >= this.arrLyrics.length) 
         cnt = 0;
       
       let totalTextHeight = numLines * this.leading;
-      while (totalTextHeight > this.img.height && this.fontSize > 1 && this.leading > 1) {
+      console.log("totalTextHeight:: "+totalTextHeight);
+      console.log("this.img.height:: "+this.img.height);
+      /*while (totalTextHeight > this.img.height && this.fontSize > 1 && this.leading > 1) {
         this.fontSize -= 0.5;
         this.leading -= 0.5;
         this.img.textSize(this.fontSize);
         this.img.textLeading(this.leading);
         totalTextHeight = numLines * this.leading;
-      }
+      }*/
 
       let yStart = (this.img.height - totalTextHeight) / 2;
       this.img.text(lines, parseInt(this.img.width*(i*xShift)), yStart, parseInt(this.img.width*0.25), parseInt(this.img.height*0.5));
@@ -81,9 +86,13 @@ class SphereAnimation extends BaseAnimation {
 
     for (let i = 0; i < words.length; i++) {
       let tempLine = line + (line.length > 0 ? ' ' : '') + words[i];
-      let tempLineWidth = this.img.textWidth(tempLine);
+      let tempLineWidth = this.img.textWidth(tempLine) * 1.02;
+      console.log("tempLine:: "+tempLine);
+      console.log("tempLineWidth:: "+tempLineWidth);
+      console.log("maxWidth:: "+maxWidth);
 
       if (tempLineWidth > maxWidth && i > 0) {
+        line = line.trimEnd();
         lines += line + '\n';
         lineCount++;
         line = words[i];
