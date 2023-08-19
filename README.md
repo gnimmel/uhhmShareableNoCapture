@@ -1,6 +1,22 @@
 # uhhmShareableNoCapture
 UHHM shareable asset - p5js, node, glsl
 
+# Ffmpeg Server Rendering
+
+This repo does not include the code for the ffmpeg server renderer.
+###
+**Render Repo:**
+https://github.com/gnimmel/uhhm-shareable-ffmpegserver
+
+### TODOS:
+- Reimplement ffmpeg server code and relevant files
+- Reimplement playwright
+- Output directory
+- Handle output video duration
+- Asset upload to google cloud?
+- onComplete event handler
+- Additional endpoints, if needed
+  
 
 # API Documentation
 
